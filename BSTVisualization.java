@@ -15,7 +15,7 @@ public class BSTVisualization extends JFrame implements ActionListener, KeyListe
 	private JButton btnAdd, btnDelete;
 	private JTextField tf;
 	private int X = 300, Y = 75;
-	private Graphics2D g2;
+	private Graphics2D g2; aa
 	private Rectangle size;
 	private JLabel labelInorder, labelPreorder, labelPostorder, labelHeight;
 	private JLabel ansInorder, ansPreorder, ansPostorder, ansHeight;
