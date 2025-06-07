@@ -1,9 +1,23 @@
+import java.util.*;
+
 public class BSTLogic {
     public static class Node {
         int value;
         Node left, right;
+        NodePosition position; // posisi node dalam koordinat
         public Node(int value) {
             this.value = value;
+        }
+        // Mengembalikan list TreeEdge dari node ini ke anaknya
+        public List<TreeEdge> getConnectionEdges() {
+            List<TreeEdge> edges = new ArrayList<>();
+            if (left != null && position != null && left.position != null) {
+                edges.add(new TreeEdge(position, left.position));
+            }
+            if (right != null && position != null && right.position != null) {
+                edges.add(new TreeEdge(position, right.position));
+            }
+            return edges;
         }
     }
 
@@ -14,14 +28,9 @@ public class BSTLogic {
     }
 
     private Node insertRec(Node node, int value) {
-        if (node == null) {
-            return new Node(value);
-        }
-        if (value < node.value) {
-            node.left = insertRec(node.left, value);
-        } else if (value > node.value) {
-            node.right = insertRec(node.right, value);
-        }
+        if (node == null) return new Node(value);
+        if (value < node.value) node.left = insertRec(node.left, value);
+        else if (value > node.value) node.right = insertRec(node.right, value);
         return node;
     }
 
@@ -31,12 +40,9 @@ public class BSTLogic {
 
     private Node deleteRec(Node node, int value) {
         if (node == null) return null;
-
-        if (value < node.value) {
-            node.left = deleteRec(node.left, value);
-        } else if (value > node.value) {
-            node.right = deleteRec(node.right, value);
-        } else {
+        if (value < node.value) node.left = deleteRec(node.left, value);
+        else if (value > node.value) node.right = deleteRec(node.right, value);
+        else {
             if (node.left == null) return node.right;
             if (node.right == null) return node.left;
             node.value = minValue(node.right);
@@ -54,35 +60,23 @@ public class BSTLogic {
         return minv;
     }
 
-    public String inorder() {
-        return inorderRec(root).trim();
-    }
-
+    public String inorder() { return inorderRec(root).trim(); }
     private String inorderRec(Node node) {
         if (node == null) return "";
         return inorderRec(node.left) + node.value + " " + inorderRec(node.right);
     }
 
-    public String preorder() {
-        return preorderRec(root).trim();
-    }
-
+    public String preorder() { return preorderRec(root).trim(); }
     private String preorderRec(Node node) {
         if (node == null) return "";
         return node.value + " " + preorderRec(node.left) + preorderRec(node.right);
     }
 
-    public String postorder() {
-        return postorderRec(root).trim();
-    }
-
+    public String postorder() { return postorderRec(root).trim(); }
     private String postorderRec(Node node) {
         if (node == null) return "";
         return postorderRec(node.left) + postorderRec(node.right) + node.value + " ";
     }
 
-    // Getter untuk root agar GUI bisa akses posisi node
-    public Node getRoot() {
-        return root;
-    }
+    public Node getRoot() { return root; }
 }
